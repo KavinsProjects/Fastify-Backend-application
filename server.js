@@ -14,6 +14,16 @@ const fastify = require("fastify")({ logger: true });
 //cors register
 fastify.register(require("@fastify/cors"));
 fastify.register(require("@fastify/sensible"));
+fastify.register(require('@fastify/multipart'));
+
+//fastify-static to server the static files
+fastify.register(require('@fastify/static'), {
+  root: path.join(__dirname, 'uploads'),
+  prefix: '/uploads/', // optional: default '/'
+  constraints: { host: 'example.com' } // optional: default {}
+});
+
+
 fastify.register(require("@fastify/env"), {
     dotenv: true,
     schema: {
@@ -43,7 +53,7 @@ fastify.register(require("./pulgins/monogodb.plugins.js"));
 fastify.register(require("./pulgins/jwt.plugin.js"));
 
 //register routes
-fastify.register(require("./routes/auth.routes.js"), {perfix: "/api/auth"});
+fastify.register(require("./routes/auth.routes.js"), { prefix: "/api/auth" });  
 
 //home route
 

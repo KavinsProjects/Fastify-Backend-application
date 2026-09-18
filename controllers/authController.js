@@ -1,7 +1,7 @@
 const User = require("../models/user.model.js");
 const crypto = require("crypto");
-const bcryptjs = require("bcryptjs");
-const { request } = require("http");
+const bcrypt = require("bcryptjs");
+
 
 exports.register = async (request, reply) => {
     try {
@@ -19,8 +19,10 @@ exports.register = async (request, reply) => {
         await user.save();
         reply.code(201).send({ message: "user registed sucessfully" });
 
-    } catch (error) {
-        reply.code(500).send({ message: "error while registering the user", error });
+    } catch (err) {
+        reply.code(500).send({ message: "error while registering the user", err});
+        //remove the pushing the code
+        console.log(err);
     }
 }
 
@@ -53,6 +55,7 @@ exports.login = async (request, reply) => {
         //validate if fails
     } catch (error) {
         reply.code(500).send({ message: "Error while logging in" });
+        console.log(err);
     }
 }
 
@@ -82,6 +85,7 @@ exports.forgotPassword = async (request, reply) => {
 
     } catch (error) {
         reply.code(500).send({ message: "Error" });
+        console.log(err);
     }
 }
 
@@ -107,8 +111,8 @@ exports.resetPassword = async (request, reply) => {
     
     await user.save();
     reply.send({message : "passwd reset sucessfully"});
+    console.log(err);
 }   
-
 
 //logout 
 exports.logout = async(request, reply)=>{

@@ -54,6 +54,7 @@ fastify.register(require("./pulgins/jwt.plugin.js"));
 
 //register routes
 fastify.register(require("./routes/auth.routes.js"), { prefix: "/api/auth" });  
+fastify.register(require("./routes/thumbnail.routes.js"), { prefix: "/api/thumbnail" });  
 
 //home route
 

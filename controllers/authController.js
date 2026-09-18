@@ -88,5 +88,30 @@ exports.forgotPassword = async (request, reply) => {
 exports.resetPassword = async (request, reply) => {
     const resetToken = request.params.token;
     const {newPassword} = request.body
+
+    const user = await User.findOne({
+        resetPasswdToken : resetToken,
+        resetPasswdExpiry : ({$gt: Date.now() }),
+    });
+
+    if(!user){
+        return reply.badRequest("Invaild are exprired passwrord reset");
+    }
+
+    //hast the passwd
+    const hasedPasswd = await bcrypt.hash(newPassword, 12);
+    user.password = hasedPasswd;
+    user.resetPasswdExpiry = undefined;
+    user.resetPasswdToken = undefined;
+
     
+    await user.save();
+    reply.send({message : "passwd reset sucessfully"});
+}   
+
+
+//logout 
+exports.logout = async(request, reply)=>{
+    reply.send({message : "user loged out "});
+
 }

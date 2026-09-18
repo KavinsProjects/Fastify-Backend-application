@@ -40,6 +40,11 @@ fastify.register(require("@fastify/env"), {
 
 //custom plugins
 fastify.register(require("./pulgins/monogodb.plugins.js"));
+fastify.register(require("./pulgins/jwt.plugin.js"));
+
+//register routes
+fastify.register(require("./routes/auth.routes.js"), {perfix: "/api/auth"});
+
 //home route
 
 fastify.get("/", function (request, reply) {
